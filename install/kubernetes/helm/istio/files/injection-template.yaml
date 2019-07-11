@@ -222,6 +222,21 @@ containers:
     periodSeconds: {{ annotation .ObjectMeta `readiness.status.sidecar.istio.io/periodSeconds` .Values.global.proxy.readinessPeriodSeconds }}
     failureThreshold: {{ annotation .ObjectMeta `readiness.status.sidecar.istio.io/failureThreshold` .Values.global.proxy.readinessFailureThreshold }}
   {{ end -}}
+  lifecycle:
+    preStop:
+      exec:
+        command:
+        - /bin/sh
+        - -c 
+        - |
+          set -e
+          echo "Exit signal received, waiting for all network connections to clear..."
+          while [ $(netstat -plunt | grep tcp | grep -v envoy | wc -l | xargs) -ne 0 ]; do
+            printf "."
+            sleep 3;
+          done
+          echo "Network connections cleared, shutting down pilot..."
+          exit 0
   securityContext:
     {{- if .Values.global.proxy.privileged }}
     privileged: true
