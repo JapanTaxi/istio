@@ -230,12 +230,12 @@ containers:
         - -c 
         - |
           set -e
-          echo "Exit signal received, waiting for all network connections to clear..."
-          while [ $(netstat -plunt | grep tcp | grep -v envoy | wc -l | xargs) -ne 0 ]; do
-            printf "."
+          echo "Exit signal received, waiting for all network connections to clear..." > /dev/termination-log
+          while [ $(netstat -plunt | grep tcp | grep -v envoy | grep -v pilot-agent | wc -l | xargs) -ne 0 ]; do
+            printf "." > /dev/termination-log
             sleep 3;
           done
-          echo "Network connections cleared, shutting down pilot..."
+          echo "Network connections cleared, shutting down pilot..." > /dev/termination-log
           exit 0
   securityContext:
     {{- if .Values.global.proxy.privileged }}
