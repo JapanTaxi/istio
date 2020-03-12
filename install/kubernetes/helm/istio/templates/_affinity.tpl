@@ -37,7 +37,7 @@
         - key: beta.kubernetes.io/arch
           operator: In
           values:
-          - {{ $key }}
+          - {{ $key | quote }}
     {{- end }}
   {{- end }}
 {{- end }}
