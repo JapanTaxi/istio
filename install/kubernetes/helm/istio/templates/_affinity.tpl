@@ -24,7 +24,7 @@
         - key: {{ $key }}
           operator: In
           values:
-          - {{ $val }}
+          - {{ $val | quote }}
         {{- end }}
 {{- end }}
 
