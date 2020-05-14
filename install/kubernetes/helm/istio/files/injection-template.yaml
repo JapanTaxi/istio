@@ -275,7 +275,7 @@ containers:
         memory: "{{ index .ObjectMeta.Annotations `sidecar.istio.io/proxyMemoryLimit` }}"
         {{ end }}
     {{- end }}
-{{ else -}}
+{{- else }}
   {{- if .Values.global.proxy.resources }}
     {{ toYaml .Values.global.proxy.resources | indent 4 }}
   {{- end }}
