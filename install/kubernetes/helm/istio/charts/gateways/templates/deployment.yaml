@@ -185,6 +185,10 @@ spec:
             periodSeconds: 2
             successThreshold: 1
             timeoutSeconds: 1
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh", "-c", "sleep 30"]
           resources:
 {{- if $spec.resources }}
 {{ toYaml $spec.resources | indent 12 }}
